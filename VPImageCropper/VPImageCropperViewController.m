@@ -10,7 +10,6 @@
 
 #define SCALE_FRAME_Y 100.0f
 #define BOUNDCE_DURATION 0.3f
-#define kDeviceScale     [UIScreen mainScreen].scale
 
 @interface VPImageCropperViewController ()
 
@@ -273,21 +272,12 @@
         x = x + (w - newW) / 2; y = 0;
         w = newH; h = newH;
     }
-    //乘以图片的分辨率，保证截到一张完整的图（分辨率：kDeviceScale）
-    CGRect myImageRect = CGRectMake(x*kDeviceScale,y*kDeviceScale, w*kDeviceScale, h*kDeviceScale);
+    //乘以图片的分辨率，保证截到一张完整的图（分辨率：self.originalImage.scale）
+    CGRect myImageRect = CGRectMake(x*self.originalImage.scale,y*self.originalImage.scale, w*self.originalImage.scale, h*self.originalImage.scale);
     CGImageRef imageRef = self.originalImage.CGImage;
     CGImageRef subImageRef = CGImageCreateWithImageInRect(imageRef, myImageRect);
-    CGSize size;
-    size.width = myImageRect.size.width;
-    size.height = myImageRect.size.height;
-    //UIGraphicsBeginImageContext(size);
-    //设置图片的分辨率，保证图片的清晰度(kDeviceScale)
-    UIGraphicsBeginImageContextWithOptions(size,NO,kDeviceScale);
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    CGContextDrawImage(context, myImageRect, subImageRef);
     UIImage *smallImage = [UIImage imageWithCGImage:subImageRef];
     CGImageRelease(subImageRef);
-    UIGraphicsEndImageContext();
     return smallImage;
 }
 
