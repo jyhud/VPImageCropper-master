@@ -276,17 +276,8 @@
     CGRect myImageRect = CGRectMake(x*self.originalImage.scale,y*self.originalImage.scale, w*self.originalImage.scale, h*self.originalImage.scale);
     CGImageRef imageRef = self.originalImage.CGImage;
     CGImageRef subImageRef = CGImageCreateWithImageInRect(imageRef, myImageRect);
-    CGSize size;
-    size.width = myImageRect.size.width;
-    size.height = myImageRect.size.height;
-    //UIGraphicsBeginImageContext(size);
-    //设置图片的分辨率，保证图片的清晰度(self.originalImage.scale)
-    UIGraphicsBeginImageContextWithOptions(size,NO,self.originalImage.scale);
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    CGContextDrawImage(context, myImageRect, subImageRef);
     UIImage *smallImage = [UIImage imageWithCGImage:subImageRef];
     CGImageRelease(subImageRef);
-    UIGraphicsEndImageContext();
     return smallImage;
 }
 
